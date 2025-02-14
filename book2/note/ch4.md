@@ -3,7 +3,7 @@
 4.2 Dijkstra 路径查找算法
 
 Dijkstra算法是一种贪心算法，用于计算图中的最短路径。它的基本思想是从起点开始，逐步扩展到其他节点，直到到达终点。在扩展的过程中，每次选择距离起点最近的节点，然后更新与该节点相邻的节点的距离。这样，直到所有节点都被访问过，就得到了起点到终点的最短路径。
-
+注意是，单源最短路径。单源。
 ![4.2.png](../img/4.2.png)
 
 ![4.3 init.png](../img/4.3%20init.png)
@@ -60,4 +60,60 @@ func (g *Graph)AddLink(a,b string,cost int){
 ```
 
 前者用于添加没有连接的新节点，另一个用于向现有节点添加连接。
+
+下面代码用来计算开销和父节点
+![@蓝不过还啊 Dijkstra算法.png](../img/%40%E8%93%9D%E4%B8%8D%E8%BF%87%E8%BF%98%E5%95%8A%20Dijkstra%E7%AE%97%E6%B3%95.png)
+```go
+func (g *Graph) Dijkstra(source string)(map[string]uint,
+	map[string]string){
+	dist,prev := map[string]uint{},map[string]string{}
+	
+	for _,node := range g.nodes{
+		dist[node.Name] = INFINITY
+		prev[node.Name] = ""
+    }
+	visited := map[string]bool{}
+	dist[source] = 0
+	// 上述代码为初始化
+	
+	for u:= source;u!="";u=getClosestNonVisitedNode(
+		dist,visited){
+		uDist := dist[u]
+		for _,link := range g.nodes[u].links{
+			if _,ok := visited[link.to.Name];ok{
+				continue
+			}
+			alt := uDist + link.cost
+			v := link.to.Name
+			if alt<dist[v]{
+				dist[v] = alt
+				prev[v] = u
+            }   
+		}
+		visited[u] = true
+    }
+	return dist,prev
+	
+}
+
+```
+下面是取最近的没有visit的节点
+```go
+func getClosestNonVisitedNode(dist map[string]uint,
+	visited map[string]bool) string{
+	lowestCost := INFINITY
+	lowestNode := ""
+	for key,dis := range dist{
+        if _,ok:= visited[key];dis == INFINITY || ok{
+		    continue
+	        }
+	    if dis < lowestCost{
+			lowestCost = dis
+			lowestNode = key
+        }	
+    }
+	return lowestNode
+}
+
+```
 

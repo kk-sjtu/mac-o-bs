@@ -177,3 +177,19 @@ func DijkstraString(dist map[string]uint, prev map[string] string)string {
 	
 }
 ```
+
+
+
+4.3 康威生命游戏
+
+游戏规则：
+1. 如果该细胞存活，
+   1. 当有少于2个存活邻居，则死亡
+   2. 有2-3个存活邻居，则存活
+   3. 有超过3个存活邻居，则死亡
+2. 如果该细胞死亡，当有3个存活邻居时，存活。
+
+
+![细胞自动机.png](../img/%E7%BB%86%E8%83%9E%E8%87%AA%E5%8A%A8%E6%9C%BA.png)
+
+具体代码，见ch4_conway_game

@@ -40,7 +40,7 @@ func (g *Graph) AddLink(a, b string, cost int) {
 	aNode := g.nodes[a]
 	bNode := g.nodes[b]
 	aNode.links = append(aNode.links,
-		Edge{from: aNode, to: bNode, cost: uint(cost)})
+		Edge{from: aNode, to: bNode, cost: cost})
 }
 
 func (g *Graph) Dijkstra(source string) (map[string]uint,
@@ -62,7 +62,7 @@ func (g *Graph) Dijkstra(source string) (map[string]uint,
 			if _, ok := visited[link.to.Name]; ok {
 				continue
 			}
-			alt := uDist + link.cost
+			alt := uDist + uint(link.cost)
 			v := link.to.Name
 			if alt < dist[v] {
 				dist[v] = alt

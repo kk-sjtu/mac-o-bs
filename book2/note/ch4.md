@@ -97,6 +97,25 @@ func (g *Graph) Dijkstra(source string)(map[string]uint,
 }
 
 ```
+这被实现为Graph结构体的接收器。在其中
+```go
+    dist,prev := map[string]uint{},map[string]string{}
+	
+	for _,node := range g.nodes{
+		dist[node.Name] = INFINITY
+		prev[node.Name] = ""
+    }
+	visited := map[string]bool{}
+	
+	dist[source]=0
+```
+第一行创建开销和记录父节点的字典。对开销和父节点进行初始化，并把源头的开销设置为0
+
+下一部分代码
+```go
+for 
+```
+
 下面是取最近的没有visit的节点
 ```go
 func getClosestNonVisitedNode(dist map[string]uint,
@@ -116,4 +135,45 @@ func getClosestNonVisitedNode(dist map[string]uint,
 }
 
 ```
+第二个函数可以获取告诉我们节点开销的字典。以及告诉我们是否访问过节点的映射，并找出开销最低且尚未访问过的节点。
 
+```go
+for u:=source;u!="";u = getClosestNonVisitedNode(dist,visited){
+	uDist := dist[u]
+}
+```
+
+逻辑是，当该函数返回空字符串时，表示已经访问了所有节点。这个函数就是为了寻找，u的最近点？
+
+```go
+for _,link := range g.nodes[u].links{
+	if _,ok := visited[link.to.Name];ok{
+    continue    
+	}
+	alt := uDist + link.cost
+	v := link.to.Name
+	if alt<dist[v]{
+        dist[v] = alt
+		prev[v] = u
+	}
+}
+visited[u] = true
+}
+```
+负责遍历该节点的输出连接，并运行迪杰斯特拉迭代。
+
+最后是制表函数
+```go
+func DijkstraString(dist map[string]uint, prev map[string] string)string {
+    buf := &bytes.Buffer{}
+    writer := tabwriter.NewWriter(buf,1,5,2,'',0)writer.Write([]byte("Node\tDistance\tPrevious Node\t\n"))
+	for key, value := range dist{
+        writer.Write([]byte(key + "\t"))
+		writer.Write([]byte(strconv.FormatUint(uint64(value),10)+"\t"))
+        writer.Write([]byte(prev[key]+"\t\n"))
+	}
+	writer.Flush()
+    return buf.string()
+	
+}
+```

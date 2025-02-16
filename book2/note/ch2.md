@@ -180,6 +180,80 @@ func multiPi(multiplier uint)float32{
 我们必须添加无符号整数到float32类型的强制转换。安全性是go高度重视的东西。
 
 
+传递函数指针给其他函数
+
+```go
+func runMathOp(a,b int, op func(int,int)int)int{
+    return op(a,b)
+}
+func add(a,b int)int{
+    return a+b
+}
+func main(){
+    fmt.Println(runMathOp(1,2,add))
+}
+```
+
+defer函数，很强大。在计算返回表达式之后，实际返回调用程序发生之前。 
+
+泛型
+
+```go
+func Print[T any](s []T){
+    for _,v := range s{
+		fmt.Println(v)
+}
+}
+```
+
+go不是面向对象的语言。没有类和对象的概念。
+```go
+type User struct{
+    Name string
+    Age int
+}
+myuser := User{Name:"km",Age:16}
+```
+
+通过传递给函数的指针修改结构体
+
+```go
+func increaseAge(u *User){
+    u.Age++
+	fmt.Println(u.Age)
+}
+```
+调用之后的确增加了。不同于C语言。可以使用u.Age，不需要什么*，->之类的。
+
+通过方法，修改结构体
+下面是两个代码。微小的区别
+
+```go
+func (u User)increaseAge(){
+    u.Age++
+    fmt.Println(u.Age)
+}
+func main(){
+	myuser := User{Name:"km",Age:16}
+    myuser.increaseAge()
+    fmt.Println(myuser.Age)
+}
+```
+
+```go
+func (u *User)increaseAge(){
+    u.Age++
+    fmt.Println(u.Age)
+}
+func main(){
+    myuser := User{Name:"km",Age:16}
+    myuser.increaseAge()
+    fmt.Println(myuser.Age)
+}
+```
+
+前者输出17，16.后者17，17。因为前者改变的是副本。而后者，用了指针，直接在原结构体上修改。
+
 
 
 

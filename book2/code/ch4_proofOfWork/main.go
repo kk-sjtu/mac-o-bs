@@ -24,6 +24,9 @@ func pow(prefix string, bitLength int) {
 			fmt.Println(string(randomBytes))
 			break
 		}
+		if totalHashesProcessed%10000000 == 0 {
+			fmt.Println("hashes processed:", humanize.Comma(int64(totalHashesProcessed)))
+		}
 	}
 	end := time.Now()
 

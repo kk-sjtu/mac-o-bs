@@ -258,9 +258,37 @@ func main(){
 
 接口定义特定结构体所需的一组函数，无需实现它。
 
+任何实现了这两个函数area()，perim()的结构体都可以被称为 geometry 类型。
 
+```go
+func (r rect) area() float64 {
+	return r.width * r.height
+}
 
+func (r rect) perim() float64 {
+	return 2*r.width + 2*r.height
+}
 
+func (c circle) area() float64 {
+	return 3.14 * c.radius * c.radius
+}
+func (c circle) perim() float64 {
+	return 2 * 3.14 * c.radius
+}
+
+type geometry interface {
+	area() float64
+	perim() float64
+}
+```
+
+2.2.9
+
+ 对于任何意外错误，Go将抛出一个panic终止程序。我们可以使用recover函数来捕获这些错误。
+
+当panic时，回返回一直返回调用栈直到根节点，但是过程中如果有recover，defer的recover，那么错误会被捕获。
+
+ 
 
 
 
